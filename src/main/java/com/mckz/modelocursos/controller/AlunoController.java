@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping(("/api/curso"))
+@RequestMapping(("/api/aluno"))
 public class AlunoController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class AlunoController {
         return "Produto deletado com sucess!";
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public Aluno update(@RequestBody Aluno aluno, @PathVariable Integer id) {
         return alunoService.update(id, aluno);
     }

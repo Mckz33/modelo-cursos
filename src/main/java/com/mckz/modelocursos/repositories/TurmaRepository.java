@@ -1,6 +1,7 @@
 package com.mckz.modelocursos.repositories;
 
 import com.mckz.modelocursos.models.Turma;
+import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class TurmaRepository {
         Optional<Turma> found = getId(professor.getId());
 
         if (found.isEmpty()) {
-            throw new InputMismatchException("Turma not found");
+            throw new ResourceNotFoundException("Turma not found");
         }
         delete(professor.getId());
         turmas.add(professor);

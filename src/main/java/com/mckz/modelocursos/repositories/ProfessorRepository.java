@@ -1,6 +1,7 @@
 package com.mckz.modelocursos.repositories;
 
 import com.mckz.modelocursos.models.Professor;
+import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class ProfessorRepository {
         Optional<Professor> found = getId(professor.getId());
 
         if (found.isEmpty()) {
-            throw new InputMismatchException("Professor not found");
+            throw new ResourceNotFoundException("Professor not found");
         }
         delete(professor.getId());
         professores.add(professor);

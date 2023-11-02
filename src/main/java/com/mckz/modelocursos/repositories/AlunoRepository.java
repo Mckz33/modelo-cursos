@@ -1,6 +1,7 @@
 package com.mckz.modelocursos.repositories;
 
 import com.mckz.modelocursos.models.Aluno;
+import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class AlunoRepository {
         Optional<Aluno> found = getId(aluno.getId());
 
         if (found.isEmpty()) {
-            throw new InputMismatchException("Aluno not found");
+            throw new ResourceNotFoundException("Aluno not found");
         }
         delete(aluno.getId());
         alunos.add(aluno);
