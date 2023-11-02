@@ -12,67 +12,67 @@ import java.util.Optional;
 public class AlunoRepository {
 
     List<Aluno> alunos = new ArrayList<>();
-    long ultimoId = 0;
+    Integer ultimoId = 0;
 
     /**
-     * Metodo para etorna uma lista de produtos
+     * Metodo para etorna uma lista de alunos.
      *
-     * @return Lista de produtos
+     * @return Lista de alunos.
      */
     public List<Aluno> getAll() {
         return alunos;
     }
 
     /**
-     * Metodo que retorna o produto encontrado pelo id
+     * Metodo que retorna o aluno encontrado pelo id.
      *
-     * @param id do produto que será localizado
-     * @return Retorna um produto caso seja encontrado
+     * @param id do aluno que será localizado.
+     * @return Retorna um aluno caso seja encontrado.
      */
-    public Optional<Aluno> getId(Long id) {
+    public Optional<Aluno> getId(Integer id) {
         return alunos
                 .stream()
-                .filter(aluno -> aluno.getId() == id)
+                .filter(aluno -> aluno.getId().equals(id))
                 .findFirst();
     }
 
     /**
-     * Metodo para adicionar um aluno a lista
+     * Metodo para adicionar um aluno a lista.
      *
-     * @param aluno a ser adicionado
-     * @return retorna o produto que foi adicionado a lista
+     * @param aluno a ser adicionado.
+     * @return retorna o aluno que foi adicionado a lista.
      */
     public Aluno create(Aluno aluno) {
         ultimoId++;
         aluno.setId(ultimoId);
-        Long casting = (Long) ultimoId;
         alunos.add(aluno);
         return aluno;
     }
 
+
     /**
-     * Metodo para deletar o produto por ID
+     * Metodo para deletar o aluno por ID.
      *
-     * @param id do produto a ser deletado
+     * @param id do aluno a ser deletado.
      */
-    public void delete(Long id) {
-        alunos.removeIf(aluno -> aluno.getId() == id);
+    public void delete(Integer id) {
+        alunos.removeIf(aluno -> aluno.getId().equals(id));
     }
 
     /**
      * Metodo para atualizar aluno pelo id
      *
      * @param aluno para atualizar a ser atualizado
-     * @param id    para identificar o aluno
      * @return retorna aluno atualizado
      */
-    public Aluno update(Aluno aluno, Long id) {
-        Optional<Aluno> found = getId(id);
+    public Aluno update(Aluno aluno) {
+        Optional<Aluno> found = getId(aluno.getId());
+
         if (found.isEmpty()) {
             throw new InputMismatchException("Aluno not found");
         }
-        delete(id);
-        create(aluno);
+        delete(aluno.getId());
+        alunos.add(aluno);
         return aluno;
     }
 }
