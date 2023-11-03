@@ -1,6 +1,7 @@
 package com.mckz.modelocursos.services;
 
 import com.mckz.modelocursos.models.Turma;
+import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import com.mckz.modelocursos.repositories.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class TurmaService {
      *
      * @return Lista de turmas.
      */
-    public List<Turma> getAll() {
-        return turmaRepository.getAll();
+    public List<Turma> findAll() {
+        return turmaRepository.findAll();
     }
 
     /**
@@ -29,39 +30,32 @@ public class TurmaService {
      * @param id do professor que será localizado.
      * @return Retorna um professor caso seja encontrado.
      */
-    public Optional<Turma> getId(Integer id) {
-        return turmaRepository.getId(id);
+    public Optional<Turma> findById(Integer id) {
+        Optional<Turma> optionalTurma = turmaRepository.findById(id);
+        if (optionalTurma.isEmpty()) {
+            throw new ResourceNotFoundException("Turma não encontrada.");
+        }
+        return optionalTurma;
     }
 
     /**
      * Metodo para adicionar um professor a lista.
      *
-     * @param professor a ser adicionado.
+     * @param turma a ser adicionado.
      * @return retorna o professor que foi adicionado a lista.
      */
-    public Turma create(Turma professor) {
-        return turmaRepository.create(professor);
+    public Turma save(Turma turma) {
+        return turmaRepository.save(turma);
     }
 
     /**
      * Metodo para deletar o professor por ID.
      *
-     * @param id do professor a ser deletado.
+     * @param turma do professor a ser deletado.
      */
-    public void delete(Integer id) {
-        turmaRepository.delete(id);
+    public void delete(Turma turma) {
+        turmaRepository.delete(turma);
     }
 
-    /**
-     * Metodo para atualizar o professor.
-     *
-     * @param id        do professor para ser atualizado.
-     * @param professor a ser atualizado.
-     * @return retorna o professor atualizado.
-     */
-    public Turma update(Integer id, Turma professor) {
-        professor.setId(id);
-        return turmaRepository.update(professor);
-    }
 
 }

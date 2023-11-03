@@ -1,6 +1,7 @@
 package com.mckz.modelocursos.services;
 
 import com.mckz.modelocursos.models.Professor;
+import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import com.mckz.modelocursos.repositories.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,18 +20,21 @@ public class ProfessorService {
      *
      * @return Lista de produtos.
      */
-    public List<Professor> getAll() {
-        return professorRepository.getAll();
+    public List<Professor> findAll() {
+        return professorRepository.findAll();
     }
 
     /**
      * Metodo que retorna o professor encontrado pelo id.
      *
-     * @param id do professor que será localizado.
      * @return Retorna um professor caso seja encontrado.
      */
-    public Optional<Professor> getId(Integer id) {
-        return professorRepository.getId(id);
+    public Optional<Professor> findById(Integer id) {
+        Optional<Professor> optionalProfessor = professorRepository.findById(id);
+        if (optionalProfessor.isEmpty()) {
+            throw new ResourceNotFoundException("Professor não encontrado.");
+        }
+        return optionalProfessor;
     }
 
     /**
@@ -39,29 +43,17 @@ public class ProfessorService {
      * @param professor a ser adicionado.
      * @return retorna o professor que foi adicionado a lista.
      */
-    public Professor create(Professor professor) {
-        return professorRepository.create(professor);
+    public Professor save(Professor professor) {
+        return professorRepository.save(professor);
     }
 
     /**
-     * Metodo para deletar o professor por ID.
-     *
-     * @param id do professor a ser deletado.
+     * Metodo que remove um professor
+     * @param professor que será removido
      */
-    public void delete(Integer id) {
-        professorRepository.delete(id);
+    public void delete(Professor professor) {
+        professorRepository.delete(professor);
     }
 
-    /**
-     * Metodo para atualizar o professor.
-     *
-     * @param id        do professor para ser atualizado.
-     * @param professor a ser atualizado.
-     * @return retorna o professor atualizado.
-     */
-    public Professor update(Integer id, Professor professor) {
-        professor.setId(id);
-        return professorRepository.update(professor);
-    }
 
 }

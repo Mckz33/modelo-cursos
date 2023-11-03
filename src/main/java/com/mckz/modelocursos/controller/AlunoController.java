@@ -1,12 +1,18 @@
 package com.mckz.modelocursos.controller;
 
+import com.mckz.modelocursos.dto.requests.AlunoRequest;
+import com.mckz.modelocursos.dto.responses.AlunoResponse;
 import com.mckz.modelocursos.models.Aluno;
 import com.mckz.modelocursos.services.AlunoService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -16,31 +22,45 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
-
     @GetMapping
-    public List<Aluno> getAll() {
-        return alunoService.getAll();
+    public ResponseEntity<List<AlunoResponse>> findAll() {
+        List<Aluno> alunos = alunoService.findAll();
+        List<AlunoResponse> alunoResponses = alunos.stream()
+                .map(a -> new ModelMapper().map(a, AlunoResponse.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(alunoResponses);
     }
 
     @PostMapping
-    public Aluno create(@RequestBody Aluno aluno) {
-        return alunoService.create(aluno);
+    public ResponseEntity<AlunoResponse> save(@RequestBody AlunoRequest alunoRequest) {
+        Aluno aluno = new ModelMapper().map(alunoRequest, Aluno.class);
+        aluno = alunoService.save(aluno);
+        AlunoResponse alunoResponse = new ModelMapper().map(aluno, AlunoResponse.class);
+        return ResponseEntity.status(HttpStatus.CREATED).body(alunoResponse);
     }
 
     @GetMapping("/{id}")
-    public Optional<Aluno> getId(@PathVariable Integer id) {
-        return alunoService.getId(id);
+    public ResponseEntity<AlunoResponse> findById(@PathVariable Integer id) {
+        Optional<Aluno> alunoOptional = alunoService.findById(id);
+        AlunoResponse alunoResponse = new ModelMapper().map(alunoOptional, AlunoResponse.class);
+        return ResponseEntity.status(HttpStatus.OK).body(alunoResponse);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Integer id) {
-        alunoService.delete(id);
-        return "Produto deletado com sucess!";
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+        Optional<Aluno> alunoOptional = alunoService.findById(id);
+        Aluno aluno = new ModelMapper().map(alunoOptional, Aluno.class);
+        alunoService.delete(aluno);
+        return ResponseEntity.status(HttpStatus.OK).body("Aluno deletado com sucesso.");
     }
 
     @PutMapping("/{id}")
-    public Aluno update(@RequestBody Aluno aluno, @PathVariable Integer id) {
-        return alunoService.update(id, aluno);
+    public ResponseEntity<AlunoResponse> update(@PathVariable Integer id, @RequestBody AlunoRequest alunoRequest) {
+        Optional<Aluno> alunoOptional = alunoService.findById(id);
+        Aluno aluno = new ModelMapper().map(alunoRequest, Aluno.class);
+        aluno.setId(alunoOptional.get().getId());
+        alunoService.save(aluno);
+        AlunoResponse alunoResponse = new ModelMapper().map(aluno, AlunoResponse.class);
+        return ResponseEntity.status(HttpStatus.OK).body(alunoResponse);
     }
-
 }

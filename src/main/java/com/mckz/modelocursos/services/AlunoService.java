@@ -1,7 +1,9 @@
 package com.mckz.modelocursos.services;
 
 import com.mckz.modelocursos.models.Aluno;
+import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import com.mckz.modelocursos.repositories.AlunoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +17,26 @@ public class AlunoService {
     private AlunoRepository alunoRepository;
 
     /**
-     * Metodo para etorna uma lista de produtos.
+     * Metodo para retornar uma lista de produtos.
      *
      * @return Lista de produtos.
      */
-    public List<Aluno> getAll() {
-        return alunoRepository.getAll();
+    public List<Aluno> findAll() {
+        return alunoRepository.findAll();
     }
 
     /**
-     * Metodo que retorna o aluno encontrado pelo id.
+     * Método que busca um aluno por id.
      *
-     * @param id do aluno que será localizado.
-     * @return Retorna um aluno caso seja encontrado.
+     * @param id para buscar o aluno.
+     * @return um optional de aluno.
      */
-    public Optional<Aluno> getId(Integer id) {
-        return alunoRepository.getId(id);
+    public Optional<Aluno> findById(Integer id) {
+        Optional<Aluno> optionalAluno = alunoRepository.findById(id);
+        if (optionalAluno.isEmpty()) {
+            throw new ResourceNotFoundException("Aluno não encontrado");
+        }
+        return optionalAluno;
     }
 
     /**
@@ -39,29 +45,18 @@ public class AlunoService {
      * @param aluno a ser adicionado.
      * @return retorna o aluno que foi adicionado a lista.
      */
-    public Aluno create(Aluno aluno) {
-        return alunoRepository.create(aluno);
+    @Transactional
+    public Aluno save(Aluno aluno) {
+        return alunoRepository.save(aluno);
     }
 
     /**
-     * Metodo para deletar o aluno por ID.
+     * Metodo que deleta um aluno
      *
-     * @param id do aluno a ser deletado.
+     * @param aluno que será deletado
      */
-    public void delete(Integer id) {
-        alunoRepository.delete(id);
+    @Transactional
+    public void delete(Aluno aluno) {
+        alunoRepository.delete(aluno);
     }
-
-    /**
-     * Metodo para atualizar o aluno.
-     *
-     * @param id    do aluno para ser atualizado.
-     * @param aluno a ser atualizado.
-     * @return retorna o aluno atualizado.
-     */
-    public Aluno update(Integer id, Aluno aluno) {
-        aluno.setId(id);
-        return alunoRepository.update(aluno);
-    }
-
 }
