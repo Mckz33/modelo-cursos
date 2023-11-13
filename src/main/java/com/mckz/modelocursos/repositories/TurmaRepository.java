@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TurmaRepository extends JpaRepository<Turma, Integer> {
+public interface TurmaRepository extends JpaRepository<Turma, Long> {
 }
 
 

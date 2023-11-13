@@ -42,14 +42,14 @@ public class ProfessorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfessorResponse> findById(@PathVariable Integer id) {
+    public ResponseEntity<ProfessorResponse> findById(@PathVariable Long id) {
         Optional<Professor> professor = professorService.findById(id);
         ProfessorResponse professorResponse = new ModelMapper().map(professor, ProfessorResponse.class);
         return ResponseEntity.status(HttpStatus.OK).body(professorResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         Optional<Professor> optionalProfessor = professorService.findById(id);
         Professor professor = new ModelMapper().map(optionalProfessor, Professor.class);
         professorService.delete(professor);
@@ -57,7 +57,7 @@ public class ProfessorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProfessorResponse> update(@PathVariable Integer id, @RequestBody ProfessorRequest professorRequest) {
+    public ResponseEntity<ProfessorResponse> update(@PathVariable Long id, @RequestBody ProfessorRequest professorRequest) {
         Optional<Professor> optionalProfessor = professorService.findById(id);
         Professor professor = new ModelMapper().map(professorRequest, Professor.class);
         professor.setId(optionalProfessor.get().getId());

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -14,7 +16,7 @@ public class Aluno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id_aluno;
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false)
@@ -22,6 +24,14 @@ public class Aluno {
     @Column(nullable = false)
     private Integer matricula;
 
-//    private Turma turma;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Turma turma;
+
+    @ManyToMany
+    @JoinTable(name = "matricula",
+    joinColumns = {@JoinColumn(name = "id_aluno")},
+    inverseJoinColumns = {@JoinColumn(name = "id_curso")})
+    private List<Curso> cursos;
 
 }

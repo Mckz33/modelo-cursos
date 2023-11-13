@@ -41,14 +41,14 @@ public class CursoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CursoResponse> findById(@PathVariable Integer id) {
+    public ResponseEntity<CursoResponse> findById(@PathVariable Long id) {
         Optional<Curso> optionalCurso = cursoService.findById(id);
         CursoResponse cursoResponse = new ModelMapper().map(optionalCurso, CursoResponse.class);
         return ResponseEntity.status(HttpStatus.OK).body(cursoResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         Optional<Curso> cursoOptional = cursoService.findById(id);
         Curso curso = new ModelMapper().map(cursoOptional, Curso.class);
         cursoService.delete(curso);
@@ -56,10 +56,10 @@ public class CursoController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CursoResponse> update(@PathVariable Integer id, @RequestBody CursoRequest cursoRequest) {
+    public ResponseEntity<CursoResponse> update(@PathVariable Long id, @RequestBody CursoRequest cursoRequest) {
         Optional<Curso> optionalCurso = cursoService.findById(id);
         Curso curso = new ModelMapper().map(cursoRequest, Curso.class);
-        curso.setId(optionalCurso.get().getId());
+        curso.setId_curso(optionalCurso.get().getId_curso());
         cursoService.save(curso);
         CursoResponse cursoResponse = new ModelMapper().map(curso, CursoResponse.class);
         return ResponseEntity.status(HttpStatus.OK).body(cursoResponse);

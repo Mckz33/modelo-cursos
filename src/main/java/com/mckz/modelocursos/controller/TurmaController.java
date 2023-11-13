@@ -43,7 +43,7 @@ public class TurmaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TurmaResponse> findById(@PathVariable Integer id) {
+    public ResponseEntity<TurmaResponse> findById(@PathVariable Long id) {
         Optional<Turma> optionalTurma = turmaService.findById(id);
         Turma turma = new ModelMapper().map(optionalTurma, Turma.class);
         TurmaResponse turmaResponse = new ModelMapper().map(turma, TurmaResponse.class);
@@ -51,7 +51,7 @@ public class TurmaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         Optional<Turma> optionalTurma = turmaService.findById(id);
         if (optionalTurma.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Turma não encontrada");
@@ -61,13 +61,13 @@ public class TurmaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable Integer id, @RequestBody Turma turma) {
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Turma turma) {
         Optional<Turma> optionalTurma = turmaService.findById(id);
         if (optionalTurma.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body("Turma não encontrada");
         }
-        var turmaUpdate = optionalTurma.get().getId();
-        turma.setId(turmaUpdate);
+        var turmaUpdate = optionalTurma.get().getId_turma();
+        turma.setId_turma(turmaUpdate);
         return ResponseEntity.status(HttpStatus.OK).body(turmaService.save(turma));
     }
 }

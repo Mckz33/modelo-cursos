@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
+public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
 }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,10 +17,9 @@ public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id_curso;
     @Column(nullable = false)
     private String nome;
     @Column(nullable = false)
     private Date cargaHoraria;
-
 }

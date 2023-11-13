@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
+
     @GetMapping
     public ResponseEntity<List<AlunoResponse>> findAll() {
         List<Aluno> alunos = alunoService.findAll();
@@ -31,6 +33,7 @@ public class AlunoController {
         return ResponseEntity.status(HttpStatus.OK).body(alunoResponses);
     }
 
+
     @PostMapping
     public ResponseEntity<AlunoResponse> save(@RequestBody AlunoRequest alunoRequest) {
         Aluno aluno = new ModelMapper().map(alunoRequest, Aluno.class);
@@ -39,15 +42,17 @@ public class AlunoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(alunoResponse);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoResponse> findById(@PathVariable Integer id) {
+    public ResponseEntity<AlunoResponse> findById(@PathVariable Long id) {
         Optional<Aluno> alunoOptional = alunoService.findById(id);
         AlunoResponse alunoResponse = new ModelMapper().map(alunoOptional, AlunoResponse.class);
         return ResponseEntity.status(HttpStatus.OK).body(alunoResponse);
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         Optional<Aluno> alunoOptional = alunoService.findById(id);
         Aluno aluno = new ModelMapper().map(alunoOptional, Aluno.class);
         alunoService.delete(aluno);
@@ -55,10 +60,10 @@ public class AlunoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlunoResponse> update(@PathVariable Integer id, @RequestBody AlunoRequest alunoRequest) {
+    public ResponseEntity<AlunoResponse> update(@PathVariable Long id, @RequestBody AlunoRequest alunoRequest) {
         Optional<Aluno> alunoOptional = alunoService.findById(id);
         Aluno aluno = new ModelMapper().map(alunoRequest, Aluno.class);
-        aluno.setId(alunoOptional.get().getId());
+        aluno.setId_aluno(alunoOptional.get().getId_aluno());
         alunoService.save(aluno);
         AlunoResponse alunoResponse = new ModelMapper().map(aluno, AlunoResponse.class);
         return ResponseEntity.status(HttpStatus.OK).body(alunoResponse);

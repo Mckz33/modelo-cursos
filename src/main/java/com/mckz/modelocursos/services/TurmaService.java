@@ -30,7 +30,7 @@ public class TurmaService {
      * @param id do professor que será localizado.
      * @return Retorna um professor caso seja encontrado.
      */
-    public Optional<Turma> findById(Integer id) {
+    public Optional<Turma> findById(Long id) {
         Optional<Turma> optionalTurma = turmaRepository.findById(id);
         if (optionalTurma.isEmpty()) {
             throw new ResourceNotFoundException("Turma não encontrada.");

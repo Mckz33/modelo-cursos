@@ -31,7 +31,7 @@ public class AlunoService {
      * @param id para buscar o aluno.
      * @return um optional de aluno.
      */
-    public Optional<Aluno> findById(Integer id) {
+    public Optional<Aluno> findById(Long id) {
         Optional<Aluno> optionalAluno = alunoRepository.findById(id);
         if (optionalAluno.isEmpty()) {
             throw new ResourceNotFoundException("Aluno não encontrado");

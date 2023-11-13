@@ -16,7 +16,7 @@ public class Turma {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id_turma;
     @Column(nullable = false)
     private Integer semestre;
     private Date anoInicio;

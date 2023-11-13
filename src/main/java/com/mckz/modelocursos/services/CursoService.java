@@ -31,7 +31,7 @@ public class CursoService {
      * @param id do curso que será localizado.
      * @return Retorna um curso caso seja encontrado.
      */
-    public Optional<Curso> findById(Integer id) {
+    public Optional<Curso> findById(Long id) {
         Optional<Curso> optionalCurso = cursoRepository.findById(id);
         if (optionalCurso.isEmpty()) {
             throw new ResourceNotFoundException("Curso não encontrado.");

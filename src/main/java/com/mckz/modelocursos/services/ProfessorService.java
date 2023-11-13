@@ -29,7 +29,7 @@ public class ProfessorService {
      *
      * @return Retorna um professor caso seja encontrado.
      */
-    public Optional<Professor> findById(Integer id) {
+    public Optional<Professor> findById(Long id) {
         Optional<Professor> optionalProfessor = professorRepository.findById(id);
         if (optionalProfessor.isEmpty()) {
             throw new ResourceNotFoundException("Professor não encontrado.");
