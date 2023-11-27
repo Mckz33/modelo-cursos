@@ -25,7 +25,7 @@ public class Aluno {
     private Integer matricula;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_turma")
     private Turma turma;
 
     @ManyToMany
