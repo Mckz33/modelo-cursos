@@ -1,0 +1,115 @@
+swagger: "2.0"
+info:
+  description: "API para gerenciamento de alunos"
+  version: "1.0.0"
+  title: "API de Alunos"
+
+securityDefinitions:
+  basicAuth:
+    type: basic
+
+paths:
+  /alunos:
+    get:
+      summary: Retorna todos os alunos
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/definitions/Aluno"
+
+    post:
+      summary: Cria um novo aluno
+      security:
+        - basicAuth: []
+      parameters:
+        - name: aluno
+          in: body
+          description: Aluno a ser criado
+          required: true
+          schema:
+            $ref: "#/definitions/Aluno"
+      responses:
+        201:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Aluno"
+
+  /alunos/{id}:
+    get:
+      summary: Retorna um aluno
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID do aluno
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Aluno"
+
+    put:
+      summary: Atualiza um aluno
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID do aluno
+          required: true
+          type: integer
+        - name: aluno
+          in: body
+          description: Aluno a ser atualizado
+          required: true
+          schema:
+            $ref: "#/definitions/Aluno"
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Aluno"
+
+    delete:
+      summary: Remove um aluno
+      security:
+        - basicAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID do aluno
+          required: true
+          type: integer
+      responses:
+        204:
+          description: "Sucesso"
+
+definitions:
+  Aluno:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      nome:
+        type: string
+      email:
+        type: string
+      telefone:
+        type: string

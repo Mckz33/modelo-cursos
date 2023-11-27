@@ -6,6 +6,9 @@ import com.mckz.modelocursos.models.Professor;
 import com.mckz.modelocursos.services.ProfessorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +27,13 @@ public class ProfessorController {
 
 
     @GetMapping
-    public ResponseEntity<List<ProfessorResponse>> findAll() {
-        List<Professor> professores = professorService.findAll();
+    public ResponseEntity<Page<ProfessorResponse>> findAll(Pageable pageable) {
+        Page<Professor> professores = professorService.findAll(pageable);
         List<ProfessorResponse> professorResponse = professores.stream()
                 .map(p -> new ModelMapper()
                         .map(p, ProfessorResponse.class))
                 .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(professorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<>(professorResponse, professores.getPageable(), professores.getTotalElements()));
     }
 
     @PostMapping

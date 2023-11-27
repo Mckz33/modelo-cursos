@@ -6,9 +6,11 @@ import com.mckz.modelocursos.models.Aluno;
 import com.mckz.modelocursos.services.AlunoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +27,12 @@ public class AlunoController {
 
 
     @GetMapping
-    public ResponseEntity<List<AlunoResponse>> findAll() {
-        List<Aluno> alunos = alunoService.findAll();
+    public ResponseEntity<Page<AlunoResponse>> findAll(Pageable pageable) {
+        Page<Aluno> alunos = alunoService.findAll(pageable);
         List<AlunoResponse> alunoResponses = alunos.stream()
                 .map(a -> new ModelMapper().map(a, AlunoResponse.class))
                 .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(alunoResponses);
+        return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<>(alunoResponses, alunos.getPageable(), alunos.getTotalElements()));
     }
 
 

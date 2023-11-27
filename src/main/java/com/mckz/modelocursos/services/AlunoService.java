@@ -5,6 +5,8 @@ import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import com.mckz.modelocursos.repositories.AlunoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class AlunoService {
      *
      * @return Lista de produtos.
      */
-    public List<Aluno> findAll() {
-        return alunoRepository.findAll();
+    public Page<Aluno> findAll(Pageable pageable) {
+        return alunoRepository.findAll(pageable);
     }
 
     /**

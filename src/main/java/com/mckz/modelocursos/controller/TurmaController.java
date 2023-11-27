@@ -7,6 +7,9 @@ import com.mckz.modelocursos.services.TurmaService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +28,13 @@ public class TurmaController {
 
 
     @GetMapping
-    public ResponseEntity<List<TurmaResponse>> findAll() {
-        List<Turma> turmas = turmaService.findAll();
+    public ResponseEntity<Page<TurmaResponse>> findAll(Pageable pageable) {
+        Page<Turma> turmas = turmaService.findAll(pageable);
         List<TurmaResponse> turmaResponses = turmas.stream()
                 .map(t -> new ModelMapper()
                         .map(t, TurmaResponse.class))
                 .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(turmaResponses);
+        return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<>(turmaResponses, turmas.getPageable(), turmas.getTotalElements()));
     }
 
     @PostMapping

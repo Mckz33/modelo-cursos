@@ -4,6 +4,8 @@ import com.mckz.modelocursos.models.Turma;
 import com.mckz.modelocursos.models.exceptions.ResourceNotFoundException;
 import com.mckz.modelocursos.repositories.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class TurmaService {
      *
      * @return Lista de turmas.
      */
-    public List<Turma> findAll() {
-        return turmaRepository.findAll();
+    public Page<Turma> findAll(Pageable pageable) {
+        return turmaRepository.findAll(pageable);
     }
 
     /**
